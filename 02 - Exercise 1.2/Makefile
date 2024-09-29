@@ -19,7 +19,7 @@ prog.x: $(OBJ)
 
 # Rule to assemble .s (RISC-V assembly) to .o (object)
 %.o: %.s
-	$(CC2) $(CFLAGS) -march=rv32i -mabi=ilp32 $< -o $@
+	$(CC2) $(CFLAGS) -march=rv32i -mabi=ilp32 -c $< -o $@
 
 # Clean up generated files
 clean:
