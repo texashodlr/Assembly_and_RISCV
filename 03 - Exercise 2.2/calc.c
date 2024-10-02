@@ -1,19 +1,15 @@
-void exit(int code)
-{
-  __asm__ __volatile__(
-    "mv a0, %0           # return code\n"
-    "li a7, 93           # syscall exit (93) \n"
-    "ecall"
-    :             // Output list
-    :"r"(code)    // Input list
-    : "a0", "a7"
-  );
-}
-
 void _start()
 {
   int ret_code = main();
   exit(ret_code);
+}
+
+int main()
+{
+  /* fd = 0 : reads from standard input (STDIN) */
+  int n = read(0, (void*) input_buffer, 10);
+  /* … */
+  return 0;
 }
 
 /* read
@@ -44,14 +40,6 @@ int read(int __fd, const void *__buf, int __n)
 /* Buffer to store the data read */
 char input_buffer[10];
 
-int main()
-{
-  /* fd = 0 : reads from standard input (STDIN) */
-  int n = read(0, (void*) input_buffer, 10);
-  /* … */
-  return 0;
-}
-
 /* write
  * Parameters:
  *  __fd:  files descriptor where that will be written.
@@ -71,6 +59,18 @@ void write(int __fd, const void *__buf, int __n)
     :   // Output list
     :"r"(__fd), "r"(__buf), "r"(__n)    // Input list
     : "a0", "a1", "a2", "a7"
+  );
+}
+
+void exit(int code)
+{
+  __asm__ __volatile__(
+    "mv a0, %0           # return code\n"
+    "li a7, 93           # syscall exit (93) \n"
+    "ecall"
+    :             // Output list
+    :"r"(code)    // Input list
+    : "a0", "a7"
   );
 }
 
